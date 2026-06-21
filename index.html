@@ -260,9 +260,13 @@
         .btn-group {
             display: flex;
             gap: 15px;
-            margin-top: 25px;
             flex-wrap: wrap;
             transform: translateZ(15px); 
+        }
+
+        /* Noklusējuma atkāpe pogu grupām kartītē */
+        .card .btn-group {
+            margin-top: 25px;
         }
 
         .btn {
@@ -340,16 +344,13 @@
 </head>
 <body class="en">
 
-    <!-- Valodu Pārslēdzējs -->
     <div class="lang-switcher">
         <button onclick="setLang('lv')" class="lang-btn" id="btn-lv">LV</button>
         <button onclick="setLang('en')" class="lang-btn active" id="btn-en">EN</button>
     </div>
 
-    <!-- Fona efekti -->
     <div class="bg-glow"></div>
     <div class="bg-glow-2"></div>
-    <!-- Kometu konteiners -->
     <div id="comet-container"></div>
 
     <header>
@@ -361,7 +362,6 @@
     <main class="container">
         <div class="projects-grid">
 
-            <!-- PROJEKTS 1: OopsCaps -->
             <div class="card" id="card-oopscaps">
                 <div class="app-header">
                     <img src="OopsCaps100X100.png" alt="OopsCaps Logo" class="app-logo">
@@ -423,21 +423,36 @@
                         <span class="lang-lv">*Aplikācija ir pārnēsājama (Portable) un nav nepieciešama instalācija. Pieejama latviešu, angļu un krievu valodās.</span>
                         <span class="lang-en">*The application is portable and requires no installation. Interface available in English, Latvian, and Russian.</span>
                     </p>
+                    <p style="font-size: 0.9rem; color: var(--accent-pink); margin-top: 15px;">
+                        <i class="fas fa-info-circle"></i> 
+                        <span class="lang-lv">Pārējo informāciju un instrukcijas lasiet GitHub saitē!</span>
+                        <span class="lang-en">Read the rest of the information and instructions on GitHub!</span>
+                    </p>
                 </div>
 
-                <div class="btn-group">
-                    <a href="https://github.com/didthislv/OopsCaps" target="_blank" class="btn btn-primary">
+                <div class="btn-group" style="margin-bottom: 10px;">
+                    <a href="https://github.com/didthislv/OopsCaps/releases/tag/OopsCaps" target="_blank" class="btn btn-primary">
                         <i class="fab fa-windows"></i> 
-                        <span class="lang-lv">Windows Versija</span><span class="lang-en">Windows Version</span>
+                        <span class="lang-lv">Windows Release</span><span class="lang-en">Windows Release</span>
+                    </a>
+                    <a href="https://github.com/didthislv/OopsCaps-macOS/releases/tag/OopsCaps-macOS" target="_blank" class="btn btn-primary">
+                        <i class="fab fa-apple"></i> 
+                        <span class="lang-lv">macOS Release</span><span class="lang-en">macOS Release</span>
+                    </a>
+                </div>
+
+                <div class="btn-group" style="margin-top: 0;">
+                    <a href="https://github.com/didthislv/OopsCaps" target="_blank" class="btn btn-secondary">
+                        <i class="fab fa-github"></i> 
+                        <span class="lang-lv">Windows Info</span><span class="lang-en">Windows Info</span>
                     </a>
                     <a href="https://github.com/didthislv/OopsCaps-macOS" target="_blank" class="btn btn-secondary">
-                        <i class="fab fa-apple"></i> 
-                        <span class="lang-lv">macOS Versija</span><span class="lang-en">macOS Version</span>
+                        <i class="fab fa-github"></i> 
+                        <span class="lang-lv">macOS Info</span><span class="lang-en">macOS Info</span>
                     </a>
                 </div>
             </div>
 
-            <!-- PROJEKTS 2: Tad un Tagad -->
             <div class="card" id="card-taduntagad">
                 <div class="app-header">
                     <img src="image_6076fa.png" alt="Then and Today Logo" class="app-logo">
@@ -524,7 +539,6 @@
         </p>
     </footer>
 
-    <!-- INTERAKTĪVAIS JAVASCRIPT -->
     <script>
         // --- 1. VALODAS NOMAIŅA ---
         function setLang(lang) {
