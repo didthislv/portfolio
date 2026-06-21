@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>didthis.lv - Portfolio</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- BĀZES STILI UN KRĀSAS --- */
+        :root {
+            --bg-color: #0b0914;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --text-main: #ffffff;
+            --text-muted: #a0a0b8;
+            --accent-purple: #bd00ff;
+            --accent-pink: #ff1493;
+            --gradient: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            --buy-coffee: #FFDD00;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden; 
+            transition: all 0.3s ease;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            margin-top: 0;
+        }
+
+        /* --- VALODU PĀRSLĒDZĒJS --- */
+        body.lv .lang-en { display: none !important; }
+        body.en .lang-lv { display: none !important; }
+
+        .lang-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 0 10px rgba(189, 0, 255, 0.3);
+        }
+
+        /* --- FONA ANIMĀCIJAS (Mākoņi) --- */
+        .bg-glow {
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(189,0,255,0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: -3;
+            filter: blur(50px);
+            animation: float 10s infinite alternate;
+        }
+        .bg-glow-2 {
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(255,20,147,0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: -3;
+            filter: blur(50px);
+            animation: float 12s infinite alternate-reverse;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* --- FONA KOMETAS --- */
+        .comet {
+            position: fixed;
+            background: linear-gradient(to bottom, rgba(189, 0, 255, 0), rgba(189, 0, 255, 1), #ffffff);
+            border-radius: 50%;
+            filter: drop-shadow(0 0 10px rgba(189, 0, 255, 0.8));
+            z-index: -2;
+            pointer-events: none;
+            animation: meteor-fall linear forwards;
+        }
+
+        @keyframes meteor-fall {
+            0% { opacity: 0; transform: translate(0, 0) rotate(45deg); }
+            10% { opacity: 1; }
+            100% { opacity: 0; transform: translate(-1500px, 1500px) rotate(45deg); }
+        }
+
+        /* --- GALVENE --- */
+        header {
+            text-align: center;
+            padding: 100px 20px 50px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* --- PROJEKTU REŽĢIS --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding-bottom: 100px;
+            perspective: 1000px; 
+        }
+
+        /* --- KARTĪTES UN LOGO --- */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(189, 0, 255, 0.4);
+            box-shadow: 0 15px 35px rgba(189, 0, 255, 0.15);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .app-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            transform: translateZ(20px); 
+        }
+
+        .app-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            transform: translateZ(15px);
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .card p, .features, .more-content {
+            transform: translateZ(10px); 
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            color: var(--text-muted);
+            flex-grow: 1;
+        }
+
+        .features li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .features li i {
+            position: absolute;
+            left: 0;
+            top: 4px;
+            color: var(--accent-purple);
+        }
+
+        /* --- POGAS --- */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            transform: translateZ(15px); 
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Samazinātā pogas klase kājenei */
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+        }
+
+        .btn-primary { background: var(--gradient); color: white; }
+        .btn-primary:hover { opacity: 0.9; box-shadow: 0 0 15px rgba(189,0,255,0.4); }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+        .btn-coffee { background-color: var(--buy-coffee); color: black; }
+        .btn-coffee:hover { background-color: #e6c800; }
+
+        /* "Lasīt vairāk" CSS loģika */
+        .more-content {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+        }
+        
+        .toggle-btn {
+            background: none;
+            color: var(--accent-pink);
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-align: left;
+            width: fit-content;
+        }
+        .toggle-btn:hover { text-decoration: underline; }
+
+        .card.expanded .more-content { display: block; }
+        .card.expanded .text-more { display: none; }
+        .card .text-less { display: none; }
+        .card.expanded .text-less { display: inline; }
+
+        /* --- KĀJENE --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        footer .btn-group {
+            justify-content: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+            transform: none; /* Kājenei 3D nav vajadzīgs */
+        }
+    </style>
+</head>
+<body class="en">
+
+    <!-- Valodu Pārslēdzējs -->
+    <div class="lang-switcher">
+        <button onclick="setLang('lv')" class="lang-btn" id="btn-lv">LV</button>
+        <button onclick="setLang('en')" class="lang-btn active" id="btn-en">EN</button>
+    </div>
+
+    <!-- Fona efekti -->
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+    <!-- Kometu konteiners -->
+    <div id="comet-container"></div>
+
+    <header>
+        <h1>didthis.lv</h1>
+        <p class="lang-lv">Aplikāciju izstrādes entuziasts. Veidoju noderīgus rīkus Windows, macOS un tīmeklim.</p>
+        <p class="lang-en">Application development enthusiast. I create useful tools for Windows, macOS, and the web.</p>
+    </header>
+
+    <main class="container">
+        <div class="projects-grid">
+
+            <!-- PROJEKTS 1: OopsCaps -->
+            <div class="card" id="card-oopscaps">
+                <div class="app-header">
+                    <img src="OopsCaps100X100.png" alt="OopsCaps Logo" class="app-logo">
+                    <h2>OopsCaps</h2>
+                </div>
+
+                <div class="tags">
+                    <span class="tag"><i class="fab fa-windows"></i> Windows</span>
+                    <span class="tag"><i class="fab fa-apple"></i> macOS</span>
+                    <span class="tag">C#</span>
+                </div>
+                
+                <p class="lang-lv">Viegla, portatīva utilītprogramma, kas ļauj ātri mainīt iezīmētā teksta reģistru jebkurā aplikācijā, izmantojot globālos karstos taustiņus (hotkeys).</p>
+                <p class="lang-en">A lightweight, portable utility that allows you to quickly change the case of selected text in any application using global hotkeys.</p>
+                
+                <ul class="features">
+                    <li><i class="fas fa-check"></i> 
+                        <strong class="lang-lv">4 Režīmi:</strong> <strong class="lang-en">4 Modes:</strong> 
+                        Invert, UPPERCASE, lowercase, Title Case.
+                    </li>
+                    <li><i class="fas fa-magic"></i> 
+                        <strong class="lang-lv">Smart Caps Lock:</strong> <strong class="lang-en">Smart Caps Lock:</strong> 
+                        <span class="lang-lv">Automātiski pārslēdz Caps Lock statusu pēc Invert funkcijas.</span>
+                        <span class="lang-en">Automatically toggles Caps Lock state after the Invert function.</span>
+                    </li>
+                    <li><i class="fas fa-keyboard"></i> 
+                        <strong class="lang-lv">Pielāgojami taustiņi:</strong> <strong class="lang-en">Customizable hotkeys:</strong> 
+                        <span class="lang-lv">Izvēlies savas kombinācijas.</span>
+                        <span class="lang-en">Set your own key combinations.</span>
+                    </li>
+                </ul>
+
+                <button class="toggle-btn" onclick="document.getElementById('card-oopscaps').classList.toggle('expanded')">
+                    <span class="text-more">
+                        <span class="lang-lv">Lasīt vairāk...</span><span class="lang-en">Read more...</span>
+                    </span>
+                    <span class="text-less">
+                        <span class="lang-lv">Rādīt mazāk</span><span class="lang-en">Show less</span>
+                    </span>
+                </button>
+                
+                <div class="more-content">
+                    <p><strong class="lang-lv">Kā lietot:</strong><strong class="lang-en">How to use:</strong></p>
+                    <ol style="color: var(--text-muted); padding-left: 20px; font-size: 0.9rem;">
+                        <li>
+                            <span class="lang-lv">Palaid OopsCaps (tas darbosies fonā/tray).</span>
+                            <span class="lang-en">Run OopsCaps (it will run quietly in the background/tray).</span>
+                        </li>
+                        <li>
+                            <span class="lang-lv">Iezīmē tekstu jebkurā dokumentā vai pārlūkā.</span>
+                            <span class="lang-en">Select text in any editor, browser, or document.</span>
+                        </li>
+                        <li>
+                            <span class="lang-lv">Nospied izvēlēto kombināciju (piem. Ctrl+Shift+I lai apgrieztu reģistru).</span>
+                            <span class="lang-en">Press the chosen hotkey (e.g. Ctrl+Shift+I to invert case).</span>
+                        </li>
+                    </ol>
+                    <p style="font-size: 0.85rem; color: #888;">
+                        <span class="lang-lv">*Aplikācija ir pārnēsājama (Portable) un nav nepieciešama instalācija. Pieejama latviešu, angļu un krievu valodās.</span>
+                        <span class="lang-en">*The application is portable and requires no installation. Interface available in English, Latvian, and Russian.</span>
+                    </p>
+                </div>
+
+                <div class="btn-group">
+                    <a href="https://github.com/didthislv/OopsCaps" target="_blank" class="btn btn-primary">
+                        <i class="fab fa-windows"></i> 
+                        <span class="lang-lv">Windows Versija</span><span class="lang-en">Windows Version</span>
+                    </a>
+                    <a href="https://github.com/didthislv/OopsCaps-macOS" target="_blank" class="btn btn-secondary">
+                        <i class="fab fa-apple"></i> 
+                        <span class="lang-lv">macOS Versija</span><span class="lang-en">macOS Version</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PROJEKTS 2: Tad un Tagad -->
+            <div class="card" id="card-taduntagad">
+                <div class="app-header">
+                    <img src="image_6076fa.png" alt="Then and Today Logo" class="app-logo">
+                    <h2>
+                        <span class="lang-lv">Tad un Tagad</span>
+                        <span class="lang-en">Then and Today</span>
+                    </h2>
+                </div>
+
+                <div class="tags">
+                    <span class="tag"><i class="fab fa-html5"></i> Web App</span>
+                    <span class="tag"><i class="fab fa-js"></i> JS ES6+</span>
+                    <span class="tag">Glassmorphism</span>
+                </div>
+                
+                <p class="lang-lv">Aplikācija, kas ļauj salīdzināt vēsturiskas fotogrāfijas ar mūsdienu skatu, izmantojot tava viedtālruņa kameru. Perfekts rīks pilsētpētniekiem un vēstures entuziastiem.</p>
+                <p class="lang-en">An application that allows you to compare historical photos with the present-day view using your smartphone camera. Perfect tool for urban explorers and history enthusiasts.</p>
+                
+                <ul class="features">
+                    <li><i class="fas fa-camera"></i> 
+                        <strong class="lang-lv">Reāllaika kamera:</strong> <strong class="lang-en">Real-time camera:</strong> 
+                        <span class="lang-lv">Redzi vēsturisko attēlu pāri kameras skatam.</span>
+                        <span class="lang-en">See the historical image overlaid on the camera view.</span>
+                    </li>
+                    <li><i class="fas fa-sliders-h"></i> 
+                        <strong class="lang-lv">Pielāgošana:</strong> <strong class="lang-en">Customization:</strong> 
+                        <span class="lang-lv">Maini caurspīdīgumu un pievelc (zoom).</span>
+                        <span class="lang-en">Adjust opacity and zoom level.</span>
+                    </li>
+                    <li><i class="fas fa-exchange-alt"></i> 
+                        <strong class="lang-lv">Salīdzināšana:</strong> <strong class="lang-en">Comparison:</strong> 
+                        <span class="lang-lv">Interaktīvs slīdnis (slider) starp "Tad" un "Tagad".</span>
+                        <span class="lang-en">Interactive slider between the historical and new photo.</span>
+                    </li>
+                </ul>
+
+                <button class="toggle-btn" onclick="document.getElementById('card-taduntagad').classList.toggle('expanded')">
+                    <span class="text-more">
+                        <span class="lang-lv">Lasīt vairāk...</span><span class="lang-en">Read more...</span>
+                    </span>
+                    <span class="text-less">
+                        <span class="lang-lv">Rādīt mazāk</span><span class="lang-en">Show less</span>
+                    </span>
+                </button>
+                
+                <div class="more-content">
+                    <p><strong class="lang-lv">Dizains un tehnoloģijas:</strong><strong class="lang-en">Design and technologies:</strong></p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">
+                        <span class="lang-lv">Izmanto moderno Glassmorphism dizainu, animētus gradientus un pielāgojas gaišajam/tumšajam režīmam. Uzbūvēta, izmantojot tīru HTML5, CSS3 un JavaScript (MediaDevices & Canvas API). Strādā tieši pārlūkā (iOS Safari, Android Chrome).</span>
+                        <span class="lang-en">Features modern Glassmorphism design, animated gradient backgrounds, and adapts to light/dark themes. Built using pure HTML5, CSS3, and JavaScript (MediaDevices & Canvas API). Works seamlessly in mobile browsers.</span>
+                    </p>
+                </div>
+
+                <div class="btn-group">
+                    <a href="https://github.com/didthislv/tad-un-tagad" target="_blank" class="btn btn-primary">
+                        <i class="fab fa-github"></i> 
+                        <span class="lang-lv">Apskatīt Projektu</span><span class="lang-en">View Project</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="btn-group">
+            <a href="https://github.com/didthislv" target="_blank" class="btn btn-sm btn-secondary">
+                <i class="fab fa-github"></i> 
+                <span class="lang-lv">Mans GitHub</span>
+                <span class="lang-en">My GitHub</span>
+            </a>
+            <a href="https://www.buymeacoffee.com/didthislv" target="_blank" class="btn btn-sm btn-coffee">
+                <i class="fas fa-coffee"></i> Buy me a coffee
+            </a>
+        </div>
+        <p>
+            &copy; 2026 didthis.lv. 
+            <span class="lang-lv">Visas tiesības aizsargātas.</span>
+            <span class="lang-en">All rights reserved.</span>
+        </p>
+    </footer>
+
+    <!-- INTERAKTĪVAIS JAVASCRIPT -->
+    <script>
+        // --- 1. VALODAS NOMAIŅA ---
+        function setLang(lang) {
+            document.body.className = lang;
+            document.documentElement.lang = lang;
+            document.getElementById('btn-lv').classList.toggle('active', lang === 'lv');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+        }
+
+        // --- 2. KARTĪŠU 3D TILT UN GLOW EFEKTS ---
+        const cards = document.querySelectorAll('.card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'none';
+            });
+
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; 
+                const y = e.clientY - rect.top;  
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -4; 
+                const rotateY = ((x - centerX) / centerX) * 4;  
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+                card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.06), rgba(255,255,255,0.02))`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transition = 'transform 0.5s ease, background 0.5s ease, border-color 0.3s ease, box-shadow 0.3s ease';
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                card.style.background = `rgba(255, 255, 255, 0.03)`;
+            });
+        });
+
+        // --- 3. VIOLETO KOMETU ĢENERATORS ---
+        function createComet() {
+            const container = document.getElementById('comet-container');
+            const comet = document.createElement('div');
+            comet.classList.add('comet');
+            
+            const startX = Math.random() * (window.innerWidth + 500); 
+            const startY = Math.random() > 0.5 ? -100 : Math.random() * (window.innerHeight / 2);
+            
+            const width = Math.random() * 2 + 1; 
+            const height = Math.random() * 60 + 40; 
+            const duration = Math.random() * 2 + 1.5; 
+            
+            comet.style.left = `${startX}px`;
+            comet.style.top = `${startY}px`;
+            comet.style.width = `${width}px`;
+            comet.style.height = `${height}px`;
+            comet.style.animationDuration = `${duration}s`;
+            
+            container.appendChild(comet);
+            
+            setTimeout(() => {
+                comet.remove();
+            }, duration * 1000);
+        }
+
+        function scheduleNextComet() {
+            createComet();
+            const nextTime = Math.random() * 5000 + 1000;
+            setTimeout(scheduleNextComet, nextTime);
+        }
+        
+        setTimeout(scheduleNextComet, 2000);
+
+    </script>
+</body>
+</html>
