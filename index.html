@@ -123,7 +123,7 @@
         /* --- GALVENE UN NEONS (Pangolin fonts) --- */
         header {
             text-align: center;
-            padding: 100px 20px 50px;
+            padding: 40px 20px 30px;
         }
 
         header h1 {
@@ -180,12 +180,13 @@
         }
 
         .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            padding-bottom: 100px;
-            perspective: 1000px; 
-        }
+    display: grid;
+    /* Palielinām 350px uz 450px, lai kartītes būtu platākas */
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 25px; /* Nedaudz samazinām atstarpi starp kartītēm no 30px uz 25px */
+    padding-bottom: 100px;
+    perspective: 1000px; 
+}
 
         /* --- KARTĪTES UN LOGO --- */
         .card {
@@ -372,6 +373,47 @@
             margin-bottom: 20px;
             transform: none; 
         }
+		/* --- PREVIEW ATTĒLS UN LENTA --- */
+.preview-container {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: blur(2px); /* Viegli aizblūrots efekts */
+    opacity: 0.6;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.preview-img:hover {
+    filter: blur(3px); /* Nedaudz asāks, kad uziet ar peli */
+    opacity: 0.8;
+}
+
+/* Dzeltenā lenta apakšējā labajā stūrī */
+.coming-soon-ribbon {
+    position: absolute;
+    bottom: 20px;
+    right: -5px; /* Rada iespaidu, ka lenta aptver stūri */
+    background-color: var(--buy-coffee); /* Izmantojam portfolio esošo dzelteno krāsu */
+    color: #0b0914; /* Tumšs teksts labam kontrastam */
+    padding: 8px 24px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: -3px 5px 15px rgba(0,0,0,0.5);
+    z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 6px 0 0 6px; /* Noapaļots tikai kreisajā pusē */
+}
     </style>
 </head>
 <body class="en">
@@ -555,6 +597,34 @@
                     </a>
                 </div>
             </div>
+
+
+<!-- PROJEKTS 3: Revit 3D HTML -->
+<div class="card" id="card-revit3dhtml">
+    <div class="app-header">
+        <img src="didthislv-3Dhtml_256.png" alt="Revit 3D HTML Ikona" class="app-logo">
+        <h2>Revit 3D HTML</h2>
+    </div>
+
+    <div class="tags">
+        <span class="tag"><i class="fab fa-windows"></i> Windows</span>
+        <span class="tag">Revit Add-in</span>
+        <span class="tag">C#</span>
+        <span class="tag"><i class="fab fa-html5"></i> 3D HTML</span>
+    </div>
+    
+    <p class="lang-lv">Revit 3D HTML ir ērts Revit papildinājums, ar kuru var pārvērst Revita 3D modeli par 3D HTML, ar daudz opcijām. Bet kādām? To drīz uzzināsiet ... ;)</p>
+    <p class="lang-en">Revit 3D HTML is a handy Revit add-in that allows you to convert a Revit 3D model into 3D HTML, with many options. But which ones? You will find out soon ... ;)</p>
+
+    <!-- Aizblūrots attēls ar lentu -->
+    <div class="preview-container">
+        <img src="3DHTML.png" alt="Revit 3D HTML Preview" class="preview-img">
+        <div class="coming-soon-ribbon">
+            <span class="lang-lv">Drīz gaidāms!</span>
+            <span class="lang-en">Coming Soon!</span>
+        </div>
+    </div>
+</div>
 
         </div>
     </main>
